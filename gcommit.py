@@ -5,6 +5,8 @@ import google.generativeai as genai
 import time
 import threading
 import argparse
+import subprocess
+import re
 
 model_name = "gemini-1.5-flash-002"
 
@@ -75,6 +77,79 @@ Examples:
     
     return parser.parse_args()
 
+def check_ssh_agent():
+    """Check if SSH agent is running and has keys loaded"""
+    try:
+        # Check if SSH agent is running
+        ssh_auth_sock = os.environ.get('SSH_AUTH_SOCK')
+        if not ssh_auth_sock:
+            return False, "SSH agent not running"
+        
+        # Check if SSH agent has keys loaded
+        result = subprocess.run(['ssh-add', '-l'], capture_output=True, text=True)
+        if result.returncode == 0:
+            return True, "SSH keys loaded"
+        elif result.returncode == 1:
+            return False, "No SSH keys loaded"
+        else:
+            return False, "SSH agent error"
+            
+    except FileNotFoundError:
+        return False, "ssh-add command not found"
+    except Exception as e:
+        return False, f"SSH check error: {e}"
+
+def is_ssh_remote(repo, remote_name):
+    """Check if remote uses SSH"""
+    try:
+        remote = repo.remotes[remote_name]
+        remote_url = list(remote.urls)[0]
+        
+        # Check if URL uses SSH format
+        ssh_patterns = [
+            r'^git@.*:.*\.git$',           # git@github.com:user/repo.git
+            r'^ssh://.*@.*:.*\.git$',      # ssh://git@github.com:22/user/repo.git
+            r'^.*@.*:.*\.git$'             # user@server:repo.git
+        ]
+        
+        for pattern in ssh_patterns:
+            if re.match(pattern, remote_url):
+                return True, remote_url
+                
+        return False, remote_url
+        
+    except Exception as e:
+        return False, f"Error checking remote: {e}"
+
+def validate_ssh_setup(repo, remote_name):
+    """Validate SSH setup for push operations"""
+    try:
+        is_ssh, remote_url = is_ssh_remote(repo, remote_name)
+        
+        if is_ssh:
+            print_status(f"SSH remote detected: {remote_url}", "info")
+            
+            # Check SSH agent
+            ssh_ok, ssh_msg = check_ssh_agent()
+            if ssh_ok:
+                print_status(ssh_msg, "success")
+            else:
+                print_status(ssh_msg, "warning")
+                print_status("SSH setup suggestions:", "info")
+                print("   1. Start SSH agent: eval \"$(ssh-agent -s)\"")
+                print("   2. Add SSH key: ssh-add ~/.ssh/id_rsa")
+                print("   3. Test connection: ssh -T git@github.com")
+                return False
+                
+        else:
+            print_status(f"HTTPS remote detected: {remote_url}", "info")
+            
+        return True
+        
+    except Exception as e:
+        print_status(f"SSH validation error: {e}", "warning")
+        return True  # Continue anyway
+
 def validate_environment():
     """Validate API Key with minimal output"""
     api_key = os.getenv("GOOGLE_API_KEY")
@@ -106,7 +181,7 @@ def validate_git_repository():
         sys.exit(1)
 
 def validate_push_parameters(repo, remote_name, branch_name):
-    """Validate push parameters"""
+    """Validate push parameters including SSH setup"""
     try:
         # Check if remote exists
         remotes = [remote.name for remote in repo.remotes]
@@ -123,6 +198,13 @@ def validate_push_parameters(repo, remote_name, branch_name):
             current_branch = repo.active_branch.name
             print_status(f"Current branch: {current_branch}", "info")
             return False
+        
+        # Validate SSH setup
+        if not validate_ssh_setup(repo, remote_name):
+            print_status("SSH setup validation failed", "warning")
+            response = input(" Continue anyway? [y/N]: ").strip().lower()
+            if response not in ['y', 'yes']:
+                return False
         
         print_status(f"Push target: {remote_name}/{branch_name}", "success")
         return True
@@ -282,7 +364,7 @@ def perform_commit(repo, commit_message):
         return False
 
 def perform_push(repo, remote_name, branch_name):
-    """Perform git push with loading animation"""
+    """Perform git push with loading animation and SSH handling"""
     try:
         # Start push animation
         spinner = LoadingSpinner(f"Pushing to {remote_name}/{branch_name}")
@@ -290,6 +372,9 @@ def perform_push(repo, remote_name, branch_name):
         
         # Get remote
         remote = repo.remotes[remote_name]
+        
+        # Check if it's SSH and provide pre-push info
+        is_ssh, remote_url = is_ssh_remote(repo, remote_name)
         
         # Push to remote
         push_info = remote.push(branch_name)
@@ -301,6 +386,14 @@ def perform_push(repo, remote_name, branch_name):
             push_result = push_info[0]
             if push_result.flags & push_result.ERROR:
                 print_status(f"Push failed: {push_result.summary}", "error")
+                
+                # SSH-specific error handling
+                if is_ssh:
+                    print_status("SSH troubleshooting:", "info")
+                    print("   1. Check SSH agent: ssh-add -l")
+                    print("   2. Test connection: ssh -T git@github.com")
+                    print("   3. Add SSH key: ssh-add ~/.ssh/id_rsa")
+                
                 return False
             elif push_result.flags & push_result.UP_TO_DATE:
                 print_status(f"Already up to date with {remote_name}/{branch_name}", "success")
@@ -315,15 +408,34 @@ def perform_push(repo, remote_name, branch_name):
     except Exception as e:
         if 'spinner' in locals():
             spinner.stop()
+        
+        error_msg = str(e).lower()
         print_status(f"Push error: {e}", "error")
         
-        # Provide helpful suggestions
-        if "Authentication failed" in str(e):
+        # Provide helpful suggestions based on error type
+        if "authentication failed" in error_msg:
             print_status("Check your Git credentials", "info")
-        elif "Permission denied" in str(e):
-            print_status("Check repository permissions", "info")
-        elif "non-fast-forward" in str(e):
+        elif "permission denied" in error_msg:
+            if is_ssh_remote(repo, remote_name)[0]:
+                print_status("SSH authentication failed", "info")
+                print("   Solutions:")
+                print("   1. ssh-add ~/.ssh/id_rsa")
+                print("   2. ssh-keygen -t rsa -b 4096 -C 'your_email@example.com'")
+                print("   3. Add public key to GitHub/GitLab")
+                print("   4. Test: ssh -T git@github.com")
+            else:
+                print_status("Check repository permissions", "info")
+        elif "host key verification failed" in error_msg:
+            print_status("SSH host key verification failed", "info")
+            print("   Solution: ssh-keyscan -H github.com >> ~/.ssh/known_hosts")
+        elif "non-fast-forward" in error_msg:
             print_status("Try: git pull before pushing", "info")
+        elif "could not read from remote repository" in error_msg:
+            print_status("Repository access error", "info")
+            if is_ssh_remote(repo, remote_name)[0]:
+                print("   SSH troubleshooting:")
+                print("   1. Test SSH: ssh -T git@github.com")
+                print("   2. Check SSH key: ssh-add -l")
         
         return False
 
