@@ -25,9 +25,12 @@
 - **🎨 Beautiful Interface**: Clean terminal UI with animated loading spinners
 - **🔒 Secure**: Uses environment variables for API key management
 - **🌍 Cross-Platform**: Works on macOS, Linux, and Windows
-- **🚀 Developer-Friendly**: Integrates seamlessly with existing Git workflow
+- **🚀 Auto-Push Support**: Commit and push in one command
+- **🔄 Smart Validation**: Validates Git repository and push parameters
 
 ## 📸 Demo
+
+### Basic Commit
 
 ```bash
 $ gcommit
@@ -53,7 +56,36 @@ $ gcommit
  Continue with commit? [Y/n]: y
  ✓ Commit successful [a1b2c3d4]
 
- ✨ Done!
+ ✨ Commit completed!
+```
+
+### Commit with Auto-Push
+
+```bash
+$ gcommit --push origin main
+
+┌─────────────────────────────────────────────────────────┐
+│ 🚀 GCOMMIT - AI Git Commit Generator                    │
+└─────────────────────────────────────────────────────────┘
+
+ ✓ API Key OK
+ ✓ Repository: my-awesome-project
+ ✓ Push target: origin/main
+ ✓ Files staged: 2
+
+ ⠋ Generating commit message...
+ ✓ Commit message generated
+
+┌─ Commit Message ─────────────────────────────────────────┐
+│ fix: resolve memory leak in user session handler        │
+└──────────────────────────────────────────────────────────┘
+
+ Continue with commit and push to origin/main? [Y/n]: y
+ ✓ Commit successful [b2c3d4e5]
+ ⠋ Pushing to origin/main...
+ ✓ Push successful to origin/main
+
+ ✨ Commit and push completed!
 ```
 
 ## 🚀 Quick Start
@@ -64,86 +96,170 @@ $ gcommit
 - **Git**: Check with `git --version`
 - **Google Gemini API Key**: Get from [Google AI Studio](https://ai.google.com/studio)
 
-### Installation by Platform
+### 🍎 macOS Installation (This Repository)
 
-#### 🍎 macOS Installation (This Repository)
+#### Method 1: Quick Install (Recommended)
 
-**Method 1: Quick Install (Recommended)**
+1. **Clone the repository**
+
+   ```bash
+   git clone https://github.com/GhufranBkri/gcommit.git
+   cd gcommit
+   ```
+
+2. **Install Python dependencies**
+
+   ```bash
+   # Option A: System-wide (with override)
+   pip3 install --break-system-packages GitPython google-generativeai
+
+   # Option B: User installation (safer)
+   pip3 install --user GitPython google-generativeai
+   ```
+
+3. **Make executable**
+
+   ```bash
+   chmod +x gcommit
+   ```
+
+4. **Add to PATH** (choose one method):
+
+   **Temporary (current session only):**
+
+   ```bash
+   export PATH="$(pwd):$PATH"
+   ```
+
+   **Permanent (recommended):**
+
+   ```bash
+   # For Zsh (default on macOS)
+   echo 'export PATH="/path/to/gcommit:$PATH"' >> ~/.zshrc
+   source ~/.zshrc
+
+   # For Bash
+   echo 'export PATH="/path/to/gcommit:$PATH"' >> ~/.bash_profile
+   source ~/.bash_profile
+   ```
+
+#### Method 2: Virtual Environment (Isolated)
+
+1. **Clone and setup**
+
+   ```bash
+   git clone https://github.com/GhufranBkri/gcommit.git
+   cd gcommit
+   ```
+
+2. **Create virtual environment**
+
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate
+   ```
+
+3. **Install dependencies**
+
+   ```bash
+   pip install GitPython google-generativeai
+   ```
+
+4. **Create requirements.txt**
+
+   ```bash
+   pip freeze > requirements.txt
+   ```
+
+5. **Make executable**
+   ```bash
+   chmod +x gcommit
+   ```
+
+**Note**: With virtual environment, you need to activate it each time:
 
 ```bash
-# Clone the repository
-git clone https://github.com/GhufranBkri/gcommit.git
-cd gcommit
-
-# Install dependencies
-pip3 install --break-system-packages GitPython google-generativeai
-
-# Make executable
-chmod +x gcommit
-
-# Add to PATH (add this to your ~/.zshrc or ~/.bash_profile)
-export PATH="$(pwd):$PATH"
-```
-
-**Method 2: Using Virtual Environment**
-
-```bash
-# Clone and setup
-git clone https://github.com/GhufranBkri/gcommit.git
-cd gcommit
-
-# Create virtual environment
-python3 -m venv venv
+cd /path/to/gcommit
 source venv/bin/activate
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Make executable
-chmod +x gcommit
 ```
 
-#### 🐧 Linux/Ubuntu Installation
+#### Method 3: Global Symlink (Advanced)
 
-For Linux/Ubuntu users, please use the dedicated Ubuntu version:
+1. **After installing with Method 1, create global symlink:**
+
+   ```bash
+   sudo ln -sf $(pwd)/gcommit /usr/local/bin/gcommit
+   ```
+
+2. **Verify installation:**
+   ```bash
+   which gcommit
+   gcommit --help
+   ```
+
+### 🐧 Linux/Ubuntu Installation
+
+For Linux/Ubuntu users, please use the dedicated optimized version:
 
 **👉 [MhmmdIchsan/gcommit-ubuntu](https://github.com/MhmmdIchsan/gcommit-ubuntu)**
 
-This version is specifically optimized for Ubuntu/Linux systems with:
+Features include:
 
-- Proper package management
+- APT package management integration
+- Systemd service support
 - Linux-specific installation scripts
-- System-wide installation support
 - Distribution-specific configurations
+- System-wide installation support
 
-#### 🪟 Windows Installation
+### 🪟 Windows Installation
 
 For Windows users, please use the dedicated Windows version:
 
 **👉 [Papazy/gcommit-windows](https://github.com/Papazy/gcommit-windows)**
 
-This version includes:
+Features include:
 
-- Windows batch scripts
+- Windows batch scripts (.bat files)
 - PowerShell installation support
-- Windows-specific path handling
-- Executable files for easy setup
+- Windows PATH handling
+- Executable files (.exe)
+- Windows Defender compatibility
 
-### Setup Google Gemini API Key
+## 🔑 Setup Google Gemini API Key
 
-1. Get your API key from [Google AI Studio](https://ai.google.com/studio)
-2. Set up environment variable based on your platform:
+### Step 1: Get API Key
+
+1. Visit [Google AI Studio](https://ai.google.com/studio)
+2. Sign in with your Google account
+3. Create a new API key
+4. Copy the generated key
+
+### Step 2: Set Environment Variable
 
 #### 🍎 macOS Setup:
 
+**Option A: Permanent Setup (Recommended)**
+
 ```bash
-# For Zsh (default on macOS)
-echo 'export GOOGLE_API_KEY="your-api-key-here"' >> ~/.zshrc
+# For Zsh (default on macOS Catalina+)
+echo 'export GOOGLE_API_KEY="your-actual-api-key-here"' >> ~/.zshrc
 source ~/.zshrc
 
 # For Bash
-echo 'export GOOGLE_API_KEY="your-api-key-here"' >> ~/.bash_profile
+echo 'export GOOGLE_API_KEY="your-actual-api-key-here"' >> ~/.bash_profile
 source ~/.bash_profile
+```
+
+**Option B: Temporary Setup (Current session)**
+
+```bash
+export GOOGLE_API_KEY="your-actual-api-key-here"
+```
+
+**Verify Setup:**
+
+```bash
+echo $GOOGLE_API_KEY
 ```
 
 #### 🐧 Linux/Ubuntu Setup:
@@ -156,126 +272,291 @@ Please refer to [Papazy/gcommit-windows](https://github.com/Papazy/gcommit-windo
 
 ## 💡 Usage
 
-1. **Stage your changes**:
+### Basic Commands
+
+1. **Stage your changes:**
 
    ```bash
-   git add .
-   # or selectively: git add file1.py file2.py
+   git add .                    # Stage all changes
+   git add file1.py file2.py    # Stage specific files
+   git add src/                 # Stage entire directory
    ```
 
-2. **Run GCommit**:
+2. **Generate commit message and commit:**
 
    ```bash
    gcommit
    ```
 
-3. **Review and confirm** the AI-generated commit message
+3. **Commit and push in one command:**
+   ```bash
+   gcommit --push origin main           # Push to origin/main
+   gcommit --push upstream develop      # Push to upstream/develop
+   gcommit -p origin feature/auth       # Short form
+   ```
 
-4. **Done!** Your changes are committed with a professional message
+### Advanced Usage
+
+**Check help:**
+
+```bash
+gcommit --help
+```
+
+**Examples:**
+
+```bash
+# Basic workflow
+git add .
+gcommit
+
+# Commit and push workflow
+git add src/
+gcommit --push origin main
+
+# Feature branch workflow
+git checkout -b feature/new-auth
+git add .
+gcommit --push origin feature/new-auth
+```
+
+### Command Options
+
+| Option   | Short | Description                      | Example                  |
+| -------- | ----- | -------------------------------- | ------------------------ |
+| `--push` | `-p`  | Commit and push to remote/branch | `gcommit -p origin main` |
+| `--help` | `-h`  | Show help message                | `gcommit --help`         |
 
 ## 🎯 Features in Detail
 
-### Conventional Commits Support
+### 🤖 AI-Powered Commit Messages
 
 GCommit automatically generates commit messages following the [Conventional Commits](https://www.conventionalcommits.org/) specification:
 
 - `feat:` - New features
 - `fix:` - Bug fixes
 - `docs:` - Documentation changes
-- `style:` - Code style changes
+- `style:` - Code style changes (formatting, etc.)
 - `refactor:` - Code refactoring
-- `test:` - Test additions/changes
+- `test:` - Adding or updating tests
 - `chore:` - Maintenance tasks
 
-### Smart Analysis
+### 🔍 Smart Analysis
 
 The AI analyzes your staged changes and generates contextually appropriate commit messages by examining:
 
-- File modifications
-- Code additions and deletions
-- File types and patterns
-- Change scope and impact
+- **File modifications**: What files were changed
+- **Code additions and deletions**: The actual changes made
+- **File types and patterns**: Understanding the context
+- **Change scope and impact**: Determining the appropriate commit type
+
+### 🚀 Auto-Push Feature
+
+New auto-push functionality allows you to:
+
+- Commit and push in a single command
+- Validate remote and branch existence
+- Handle push errors gracefully
+- Provide helpful error messages
+
+**Auto-Push Validation:**
+
+- ✅ Checks if remote exists
+- ✅ Validates branch exists locally
+- ✅ Provides clear error messages
+- ✅ Suggests solutions for common issues
 
 ## 🛠️ Configuration
 
-### Custom Model Settings
+### Custom AI Model
 
 You can modify the AI model in `gcommit.py`:
 
 ```python
 model_name = "gemini-1.5-flash-002"  # Default model
+# model_name = "gemini-pro"         # Alternative model
 ```
 
 ### Environment Variables
 
-- `GOOGLE_API_KEY`: Your Google Gemini API key (required)
+| Variable         | Required | Description                |
+| ---------------- | -------- | -------------------------- |
+| `GOOGLE_API_KEY` | ✅ Yes   | Your Google Gemini API key |
+
+### File Structure
+
+```
+gcommit/
+├── gcommit              # Main executable script
+├── gcommit.py          # Python source code
+├── README.md           # This documentation
+├── LICENSE             # MIT License
+├── requirements.txt    # Python dependencies (if using venv)
+└── .gitignore         # Git ignore rules
+```
 
 ## 🐛 Troubleshooting
 
 ### Common Issues
 
-**"GOOGLE_API_KEY not found"**
+#### ❌ "GOOGLE_API_KEY not found"
 
-- Ensure you've set the environment variable correctly
-- Restart your terminal after setting the variable
+**Solution:**
 
-**"No files staged"**
+```bash
+# Check if variable is set
+echo $GOOGLE_API_KEY
 
-- Run `git add <files>` before using gcommit
-- Check `git status` to see unstaged changes
+# Set the variable (replace with your actual key)
+export GOOGLE_API_KEY="your-actual-api-key-here"
 
-**"Not a valid git directory"**
+# Make it permanent
+echo 'export GOOGLE_API_KEY="your-actual-api-key-here"' >> ~/.zshrc
+source ~/.zshrc
+```
 
-- Ensure you're in a Git repository
-- Run `git init` if needed
+#### ❌ "No files staged"
 
-**Dependencies installation error on macOS**
+**Solution:**
 
-- Use `--break-system-packages` flag with pip3
-- Or use virtual environment (recommended)
+```bash
+# Check git status
+git status
+
+# Stage files
+git add .                    # Stage all
+git add specific-file.py     # Stage specific file
+```
+
+#### ❌ "Not a valid git directory"
+
+**Solution:**
+
+```bash
+# Initialize git repository
+git init
+
+# Or navigate to existing repository
+cd /path/to/your/git/repository
+```
+
+#### ❌ "Command not found: gcommit"
+
+**Solution:**
+
+```bash
+# Check if gcommit is in PATH
+which gcommit
+
+# Add to PATH temporarily
+export PATH="/path/to/gcommit:$PATH"
+
+# Add to PATH permanently
+echo 'export PATH="/path/to/gcommit:$PATH"' >> ~/.zshrc
+source ~/.zshrc
+```
+
+#### ❌ Dependencies installation error on macOS
+
+**Solution:**
+
+```bash
+# Option 1: Use break-system-packages flag
+pip3 install --break-system-packages GitPython google-generativeai
+
+# Option 2: Use user installation
+pip3 install --user GitPython google-generativeai
+
+# Option 3: Use virtual environment (recommended)
+python3 -m venv venv
+source venv/bin/activate
+pip install GitPython google-generativeai
+```
+
+#### ❌ Push-related errors
+
+**Solutions:**
+
+```bash
+# Authentication failed
+git config --global credential.helper store
+
+# Permission denied
+# Check repository permissions on GitHub/GitLab
+
+# Non-fast-forward
+git pull origin main  # Pull latest changes first
+```
 
 ### Platform-Specific Issues
 
-**macOS Issues**: Check this repository's issues
-**Linux Issues**: Check [MhmmdIchsan/gcommit-ubuntu issues](https://github.com/MhmmdIchsan/gcommit-ubuntu/issues)
-**Windows Issues**: Check [Papazy/gcommit-windows issues](https://github.com/Papazy/gcommit-windows/issues)
+- **macOS Issues**: [Create issue](https://github.com/GhufranBkri/gcommit/issues)
+- **Linux Issues**: [MhmmdIchsan/gcommit-ubuntu issues](https://github.com/MhmmdIchsan/gcommit-ubuntu/issues)
+- **Windows Issues**: [Papazy/gcommit-windows issues](https://github.com/Papazy/gcommit-windows/issues)
 
 ## 🤝 Contributing
 
 We welcome contributions! Here's how you can help:
 
-1. **Fork the appropriate repository** for your platform
-2. **Create a feature branch**: `git checkout -b feature/amazing-feature`
-3. **Commit your changes**: `git commit -m 'Add amazing feature'`
-4. **Push to the branch**: `git push origin feature/amazing-feature`
-5. \*\*Open a Pull Request`
+### Quick Contribution Guide
+
+1. **Fork the appropriate repository** for your platform:
+
+   - macOS: This repository
+   - Linux: [gcommit-ubuntu](https://github.com/MhmmdIchsan/gcommit-ubuntu)
+   - Windows: [gcommit-windows](https://github.com/Papazy/gcommit-windows)
+
+2. **Create a feature branch:**
+
+   ```bash
+   git checkout -b feature/amazing-feature
+   ```
+
+3. **Make your changes and test them**
+
+4. **Commit your changes:**
+
+   ```bash
+   git add .
+   gcommit  # Use gcommit itself! 😄
+   ```
+
+5. **Push to your fork:**
+
+   ```bash
+   git push origin feature/amazing-feature
+   ```
+
+6. **Open a Pull Request**
 
 ### Development Setup
 
-**For macOS:**
+**For macOS development:**
 
 ```bash
 git clone https://github.com/GhufranBkri/gcommit.git
 cd gcommit
-pip install -r requirements.txt
+python3 -m venv venv
+source venv/bin/activate
+pip install GitPython google-generativeai
 ```
 
-**For Linux/Ubuntu:**
-See [MhmmdIchsan/gcommit-ubuntu](https://github.com/MhmmdIchsan/gcommit-ubuntu) for development setup
+**For other platforms:**
 
-**For Windows:**
-See [Papazy/gcommit-windows](https://github.com/Papazy/gcommit-windows) for development setup
+- Linux: See [MhmmdIchsan/gcommit-ubuntu](https://github.com/MhmmdIchsan/gcommit-ubuntu)
+- Windows: See [Papazy/gcommit-windows](https://github.com/Papazy/gcommit-windows)
 
 ## 📊 Project Stats
 
 - **Language**: Python 3.7+
 - **Dependencies**: GitPython, google-generativeai
 - **License**: MIT
-- **Platform**: Cross-platform (macOS, Linux, Windows)
+- **Platforms**: macOS, Linux, Windows
+- **Features**: AI commit generation, auto-push, conventional commits
 
 ## 🔗 Related Projects & Repositories
 
-### Official Repositories:
+### Official GCommit Repositories:
 
 - **macOS**: [GhufranBkri/gcommit](https://github.com/GhufranBkri/gcommit) (Main)
 - **Linux/Ubuntu**: [MhmmdIchsan/gcommit-ubuntu](https://github.com/MhmmdIchsan/gcommit-ubuntu)
@@ -284,8 +565,9 @@ See [Papazy/gcommit-windows](https://github.com/Papazy/gcommit-windows) for deve
 ### External Resources:
 
 - [Conventional Commits](https://www.conventionalcommits.org/)
-- [GitPython](https://github.com/gitpython-developers/GitPython)
+- [GitPython Documentation](https://github.com/gitpython-developers/GitPython)
 - [Google Generative AI](https://github.com/google/generative-ai-python)
+- [Google AI Studio](https://ai.google.com/studio)
 
 ## 📄 License
 
@@ -295,15 +577,16 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 If you find GCommit helpful, please consider:
 
-- ⭐ Starring the repositories:
+- ⭐ **Starring the repositories:**
   - [Main macOS repository](https://github.com/GhufranBkri/gcommit)
   - [Ubuntu repository](https://github.com/MhmmdIchsan/gcommit-ubuntu)
   - [Windows repository](https://github.com/Papazy/gcommit-windows)
-- 🐛 Reporting bugs on the appropriate platform repository
-- 💡 Suggesting new features
-- 🤝 Contributing to the project
+- 🐛 **Reporting bugs** on the appropriate platform repository
+- 💡 **Suggesting new features**
+- 🤝 **Contributing to the project**
+- 📢 **Sharing with other developers**
 
-## 📞 Support
+## 📞 Support & Community
 
 ### General Support:
 
@@ -317,8 +600,17 @@ If you find GCommit helpful, please consider:
 - **Linux/Ubuntu**: [MhmmdIchsan/gcommit-ubuntu](https://github.com/MhmmdIchsan/gcommit-ubuntu/issues)
 - **Windows**: [Papazy/gcommit-windows](https://github.com/Papazy/gcommit-windows/issues)
 
+### Community Guidelines:
+
+- Be respectful and constructive
+- Provide detailed information for bug reports
+- Search existing issues before creating new ones
+- Use appropriate repository for platform-specific issues
+
 ---
 
-**Keywords**: git commit generator, ai commit message, conventional commits, google gemini ai, git automation, developer tools, python git tools, commit message generator, ai git helper, automated git commits, git workflow optimization
+**Keywords**: git commit generator, ai commit message, conventional commits, google gemini ai, git automation, developer tools, python git tools, commit message generator, ai git helper, automated git commits, git workflow optimization, auto push, ai powered git
 
 Made with ❤️ by developers, for developers across all platforms.
+
+⭐ **Star this project if it helped you!**
