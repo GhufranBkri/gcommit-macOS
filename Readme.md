@@ -9,6 +9,14 @@
 
 **GCommit** is an intelligent Git commit message generator that uses Google Gemini AI to create professional, conventional commit messages automatically. Perfect for developers who want to maintain consistent commit history without the hassle of writing commit messages manually.
 
+## 📱 Platform-Specific Versions
+
+| Platform            | Repository                                                                  | Description                        |
+| ------------------- | --------------------------------------------------------------------------- | ---------------------------------- |
+| 🍎 **macOS**        | [GhufranBkri/gcommit](https://github.com/GhufranBkri/gcommit)               | Main repository with macOS support |
+| 🐧 **Linux/Ubuntu** | [MhmmdIchsan/gcommit-ubuntu](https://github.com/MhmmdIchsan/gcommit-ubuntu) | Optimized for Ubuntu/Linux systems |
+| 🪟 **Windows**      | [Papazy/gcommit-windows](https://github.com/Papazy/gcommit-windows)         | Windows-compatible version         |
+
 ## 🌟 Why GCommit?
 
 - **🤖 AI-Powered**: Leverages Google Gemini AI for intelligent commit message generation
@@ -56,9 +64,11 @@ $ gcommit
 - **Git**: Check with `git --version`
 - **Google Gemini API Key**: Get from [Google AI Studio](https://ai.google.com/studio)
 
-### Installation
+### Installation by Platform
 
-#### Method 1: Quick Install (Recommended)
+#### 🍎 macOS Installation (This Repository)
+
+**Method 1: Quick Install (Recommended)**
 
 ```bash
 # Clone the repository
@@ -75,7 +85,7 @@ chmod +x gcommit
 export PATH="$(pwd):$PATH"
 ```
 
-#### Method 2: Using Virtual Environment
+**Method 2: Using Virtual Environment**
 
 ```bash
 # Clone and setup
@@ -93,10 +103,38 @@ pip install -r requirements.txt
 chmod +x gcommit
 ```
 
+#### 🐧 Linux/Ubuntu Installation
+
+For Linux/Ubuntu users, please use the dedicated Ubuntu version:
+
+**👉 [MhmmdIchsan/gcommit-ubuntu](https://github.com/MhmmdIchsan/gcommit-ubuntu)**
+
+This version is specifically optimized for Ubuntu/Linux systems with:
+
+- Proper package management
+- Linux-specific installation scripts
+- System-wide installation support
+- Distribution-specific configurations
+
+#### 🪟 Windows Installation
+
+For Windows users, please use the dedicated Windows version:
+
+**👉 [Papazy/gcommit-windows](https://github.com/Papazy/gcommit-windows)**
+
+This version includes:
+
+- Windows batch scripts
+- PowerShell installation support
+- Windows-specific path handling
+- Executable files for easy setup
+
 ### Setup Google Gemini API Key
 
 1. Get your API key from [Google AI Studio](https://ai.google.com/studio)
-2. Add to your shell configuration:
+2. Set up environment variable based on your platform:
+
+#### 🍎 macOS Setup:
 
 ```bash
 # For Zsh (default on macOS)
@@ -107,6 +145,14 @@ source ~/.zshrc
 echo 'export GOOGLE_API_KEY="your-api-key-here"' >> ~/.bash_profile
 source ~/.bash_profile
 ```
+
+#### 🐧 Linux/Ubuntu Setup:
+
+Please refer to [MhmmdIchsan/gcommit-ubuntu](https://github.com/MhmmdIchsan/gcommit-ubuntu) for detailed Linux-specific setup instructions.
+
+#### 🪟 Windows Setup:
+
+Please refer to [Papazy/gcommit-windows](https://github.com/Papazy/gcommit-windows) for detailed Windows-specific setup instructions.
 
 ## 💡 Usage
 
@@ -188,23 +234,37 @@ model_name = "gemini-1.5-flash-002"  # Default model
 - Use `--break-system-packages` flag with pip3
 - Or use virtual environment (recommended)
 
+### Platform-Specific Issues
+
+**macOS Issues**: Check this repository's issues
+**Linux Issues**: Check [MhmmdIchsan/gcommit-ubuntu issues](https://github.com/MhmmdIchsan/gcommit-ubuntu/issues)
+**Windows Issues**: Check [Papazy/gcommit-windows issues](https://github.com/Papazy/gcommit-windows/issues)
+
 ## 🤝 Contributing
 
 We welcome contributions! Here's how you can help:
 
-1. **Fork the repository**
+1. **Fork the appropriate repository** for your platform
 2. **Create a feature branch**: `git checkout -b feature/amazing-feature`
 3. **Commit your changes**: `git commit -m 'Add amazing feature'`
 4. **Push to the branch**: `git push origin feature/amazing-feature`
-5. **Open a Pull Request**
+5. \*\*Open a Pull Request`
 
 ### Development Setup
+
+**For macOS:**
 
 ```bash
 git clone https://github.com/GhufranBkri/gcommit.git
 cd gcommit
 pip install -r requirements.txt
 ```
+
+**For Linux/Ubuntu:**
+See [MhmmdIchsan/gcommit-ubuntu](https://github.com/MhmmdIchsan/gcommit-ubuntu) for development setup
+
+**For Windows:**
+See [Papazy/gcommit-windows](https://github.com/Papazy/gcommit-windows) for development setup
 
 ## 📊 Project Stats
 
@@ -213,7 +273,15 @@ pip install -r requirements.txt
 - **License**: MIT
 - **Platform**: Cross-platform (macOS, Linux, Windows)
 
-## 🔗 Related Projects
+## 🔗 Related Projects & Repositories
+
+### Official Repositories:
+
+- **macOS**: [GhufranBkri/gcommit](https://github.com/GhufranBkri/gcommit) (Main)
+- **Linux/Ubuntu**: [MhmmdIchsan/gcommit-ubuntu](https://github.com/MhmmdIchsan/gcommit-ubuntu)
+- **Windows**: [Papazy/gcommit-windows](https://github.com/Papazy/gcommit-windows)
+
+### External Resources:
 
 - [Conventional Commits](https://www.conventionalcommits.org/)
 - [GitPython](https://github.com/gitpython-developers/GitPython)
@@ -227,19 +295,30 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 If you find GCommit helpful, please consider:
 
-- ⭐ Starring this repository
-- 🐛 Reporting bugs
+- ⭐ Starring the repositories:
+  - [Main macOS repository](https://github.com/GhufranBkri/gcommit)
+  - [Ubuntu repository](https://github.com/MhmmdIchsan/gcommit-ubuntu)
+  - [Windows repository](https://github.com/Papazy/gcommit-windows)
+- 🐛 Reporting bugs on the appropriate platform repository
 - 💡 Suggesting new features
 - 🤝 Contributing to the project
 
 ## 📞 Support
 
+### General Support:
+
 - **Issues**: [GitHub Issues](https://github.com/GhufranBkri/gcommit/issues)
 - **Discussions**: [GitHub Discussions](https://github.com/GhufranBkri/gcommit/discussions)
 - **Email**: ghufranbakrie@gmail.com
+
+### Platform-Specific Support:
+
+- **macOS**: [This repository](https://github.com/GhufranBkri/gcommit/issues)
+- **Linux/Ubuntu**: [MhmmdIchsan/gcommit-ubuntu](https://github.com/MhmmdIchsan/gcommit-ubuntu/issues)
+- **Windows**: [Papazy/gcommit-windows](https://github.com/Papazy/gcommit-windows/issues)
 
 ---
 
 **Keywords**: git commit generator, ai commit message, conventional commits, google gemini ai, git automation, developer tools, python git tools, commit message generator, ai git helper, automated git commits, git workflow optimization
 
-Made with ❤️ by developers, for developers.
+Made with ❤️ by developers, for developers across all platforms.
