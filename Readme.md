@@ -1,134 +1,245 @@
-# Panduan Instalasi gcommit untuk macOS
+# 🚀 GCommit - AI-Powered Git Commit Message Generator
 
-Ikuti langkah-langkah berikut untuk mengatur alat gcommit di macOS Anda.
+> Automatically generate professional commit messages using Google Gemini AI for macOS, Linux, and Windows
 
-## 1. Persiapan Awal
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.7+](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/downloads/)
+[![GitHub stars](https://img.shields.io/github/stars/GhufranBkri/gcommit.svg)](https://github.com/GhufranBkri/gcommit/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/GhufranBkri/gcommit.svg)](https://github.com/GhufranBkri/gcommit/network)
 
-Sebelum memulai, pastikan Anda memiliki **Python** dan **Git** terinstal di komputer Anda.
+**GCommit** is an intelligent Git commit message generator that uses Google Gemini AI to create professional, conventional commit messages automatically. Perfect for developers who want to maintain consistent commit history without the hassle of writing commit messages manually.
 
-- **Python 3.x**:
-  Python 3 mungkin sudah terinstal. Anda bisa memeriksanya dengan membuka **Terminal** dan menjalankan `python3 --version`. Jika belum, Anda bisa menginstalnya menggunakan [Homebrew](https://brew.sh/) dengan perintah `brew install python`.
-- **Git**:
-  Git seringkali sudah terinstal atau dapat diinstal dengan Xcode Command Line Tools. Buka **Terminal** dan jalankan `xcode-select --install`. Alternatif lain adalah melalui [Homebrew](https://brew.sh/) dengan perintah `brew install git`.
+## 🌟 Why GCommit?
 
-Buka **Terminal** untuk menjalankan semua perintah berikut.
+- **🤖 AI-Powered**: Leverages Google Gemini AI for intelligent commit message generation
+- **📝 Professional Format**: Follows Conventional Commits standard automatically
+- **⚡ Fast & Simple**: One command to analyze changes and commit
+- **🎨 Beautiful Interface**: Clean terminal UI with animated loading spinners
+- **🔒 Secure**: Uses environment variables for API key management
+- **🌍 Cross-Platform**: Works on macOS, Linux, and Windows
+- **🚀 Developer-Friendly**: Integrates seamlessly with existing Git workflow
 
----
-
-## 2. Clone Repository gcommit
-
-Clone repository gcommit ke komputer Anda menggunakan perintah berikut di Terminal:
+## 📸 Demo
 
 ```bash
-git clone https://github.com/GhufranBkri/gcommit.git # Ganti dengan URL repository Anda
+$ gcommit
+
+┌─────────────────────────────────────────────────────────┐
+│ 🚀 GCOMMIT - AI Git Commit Generator                    │
+└─────────────────────────────────────────────────────────┘
+
+ ✓ API Key OK
+ ✓ Repository: my-awesome-project
+ ✓ Files staged: 3
+   📄 src/auth.py
+   📄 tests/test_auth.py
+   📄 README.md
+
+ ⠋ Generating commit message...
+ ✓ Commit message generated
+
+┌─ Commit Message ─────────────────────────────────────────┐
+│ feat: add user authentication with JWT tokens           │
+└──────────────────────────────────────────────────────────┘
+
+ Continue with commit? [Y/n]: y
+ ✓ Commit successful [a1b2c3d4]
+
+ ✨ Done!
+```
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+- **Python 3.7+**: Check with `python3 --version`
+- **Git**: Check with `git --version`
+- **Google Gemini API Key**: Get from [Google AI Studio](https://ai.google.com/studio)
+
+### Installation
+
+#### Method 1: Quick Install (Recommended)
+
+```bash
+# Clone the repository
+git clone https://github.com/GhufranBkri/gcommit.git
 cd gcommit
+
+# Install dependencies
+pip3 install --break-system-packages GitPython google-generativeai
+
+# Make executable
+chmod +x gcommit
+
+# Add to PATH (add this to your ~/.zshrc or ~/.bash_profile)
+export PATH="$(pwd):$PATH"
 ```
 
-lalu jalankan
-`pip install GitPython google-generativeai`
-
----
-
-## 3. Dapatkan dan Atur Google Gemini API Key
-
-gcommit membutuhkan API Key dari Google Gemini untuk berkomunikasi dengan model AI.
-
-### Dapatkan API Key
-
-1. Buka [Google AI Studio](https://ai.google.com/studio) di browser Anda.
-2. Login dengan akun Google Anda.
-3. Klik **"Get API key"** di bagian kiri.
-4. Klik **"Create API key in new project"** dan salin key yang muncul (diawali dengan `AIza...`).
-
-### Atur API Key sebagai Variabel Lingkungan di macOS
-
-1. Buka file konfigurasi shell Anda di Terminal. Jika Anda menggunakan Zsh (default di macOS Catalina ke atas), jalankan:
-   ```bash
-   open ~/.zshrc
-   ```
-   Jika Anda menggunakan Bash, jalankan:
-   ```bash
-   open ~/.bash_profile
-   ```
-   Jika file tersebut tidak ada, perintah `open` mungkin akan memberitahu Anda. Dalam kasus tersebut, Anda bisa membuatnya atau menggunakan file profil shell yang sesuai.
-2. Tambahkan baris berikut ke akhir file, ganti `API_KEY_ANDA` dengan API Key yang telah Anda salin:
-   ```bash
-   export GOOGLE_API_KEY="API_KEY_ANDA"
-   ```
-3. Simpan file dan tutup editor.
-4. Muat ulang konfigurasi shell Anda. Jika Anda mengedit `~/.zshrc`, jalankan:
-   ```bash
-   source ~/.zshrc
-   ```
-   Jika Anda mengedit `~/.bash_profile`, jalankan:
-   ```bash
-   source ~/.bash_profile
-   ```
-   > **Penting**: Buka jendela Terminal baru atau tab baru agar perubahan variabel lingkungan berlaku.
-
----
-
-## 4. Buat Skrip `gcommit` dan Tambahkan ke PATH Sistem di macOS
-
-Langkah ini memungkinkan Anda menjalankan `gcommit` dari direktori mana saja di Terminal.
-
-1.  Pastikan Anda berada di direktori root proyek `gcommit` yang telah di-clone.
-2.  Buat file `gcommit` tersebut dapat dieksekusi dengan menjalankan perintah berikut di Terminal:
-    ```bash
-    chmod +x gcommit
-    ```
-3.  Buka file konfigurasi shell Anda (misalnya `~/.zshrc` atau `~/.bash_profile`) seperti pada langkah pengaturan API Key.
-4.  Tambahkan baris berikut ke akhir file, ganti `/path/to/your/gcommit/folder` dengan path absolut ke direktori tempat Anda meng-clone repository `gcommit`.
-    ```bash
-    export PATH="/path/to/your/gcommit/folder:$PATH"
-    ```
-    Contoh: Jika Anda meng-clone `gcommit` ke `~/Documents/gcommit`, barisnya akan menjadi:
-    ```bash
-    export PATH="$HOME/Documents/gcommit:$PATH"
-    ```
-    Anda bisa mendapatkan path absolut ke direktori `gcommit` saat ini dengan menjalankan `pwd` di dalam direktori tersebut.
-5.  Simpan file dan muat ulang konfigurasi shell Anda (misalnya `source ~/.zshrc`).
-
-> **Penting**: Buka jendela Terminal baru atau tab baru agar perubahan PATH berlaku.
-
----
-
-## 5. Instal Dependensi Python
-
-Proyek ini memerlukan beberapa pustaka Python.
-
-1.  Pastikan Anda memiliki file `requirements.txt` di direktori root proyek `gcommit` dengan konten seperti:
-    ```text
-    GitPython
-    google-generativeai
-    ```
-2.  Instal dependensi menggunakan pip:
-    ```bash
-    pip3 install -r requirements.txt
-    ```
-    Jika Anda menggunakan lingkungan virtual, aktifkan terlebih dahulu.
-
----
-
-## Cara Menggunakan gcommit
-
-1. Buka **Terminal**.
-2. Pindah ke direktori proyek Git Anda:
+#### Method 2: Using Virtual Environment
 
 ```bash
-cd /path/to/your/git/project
+# Clone and setup
+git clone https://github.com/GhufranBkri/gcommit.git
+cd gcommit
+
+# Create virtual environment
+python3 -m venv venv
+source venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Make executable
+chmod +x gcommit
 ```
 
-3. Lakukan staging perubahan yang ingin Anda commit:
+### Setup Google Gemini API Key
+
+1. Get your API key from [Google AI Studio](https://ai.google.com/studio)
+2. Add to your shell configuration:
 
 ```bash
-git add . # atau git add <file1> <file2> ...
+# For Zsh (default on macOS)
+echo 'export GOOGLE_API_KEY="your-api-key-here"' >> ~/.zshrc
+source ~/.zshrc
+
+# For Bash
+echo 'export GOOGLE_API_KEY="your-api-key-here"' >> ~/.bash_profile
+source ~/.bash_profile
 ```
 
-4. Jalankan alat gcommit:
+## 💡 Usage
+
+1. **Stage your changes**:
+
+   ```bash
+   git add .
+   # or selectively: git add file1.py file2.py
+   ```
+
+2. **Run GCommit**:
+
+   ```bash
+   gcommit
+   ```
+
+3. **Review and confirm** the AI-generated commit message
+
+4. **Done!** Your changes are committed with a professional message
+
+## 🎯 Features in Detail
+
+### Conventional Commits Support
+
+GCommit automatically generates commit messages following the [Conventional Commits](https://www.conventionalcommits.org/) specification:
+
+- `feat:` - New features
+- `fix:` - Bug fixes
+- `docs:` - Documentation changes
+- `style:` - Code style changes
+- `refactor:` - Code refactoring
+- `test:` - Test additions/changes
+- `chore:` - Maintenance tasks
+
+### Smart Analysis
+
+The AI analyzes your staged changes and generates contextually appropriate commit messages by examining:
+
+- File modifications
+- Code additions and deletions
+- File types and patterns
+- Change scope and impact
+
+## 🛠️ Configuration
+
+### Custom Model Settings
+
+You can modify the AI model in `gcommit.py`:
+
+```python
+model_name = "gemini-1.5-flash-002"  # Default model
+```
+
+### Environment Variables
+
+- `GOOGLE_API_KEY`: Your Google Gemini API key (required)
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+**"GOOGLE_API_KEY not found"**
+
+- Ensure you've set the environment variable correctly
+- Restart your terminal after setting the variable
+
+**"No files staged"**
+
+- Run `git add <files>` before using gcommit
+- Check `git status` to see unstaged changes
+
+**"Not a valid git directory"**
+
+- Ensure you're in a Git repository
+- Run `git init` if needed
+
+**Dependencies installation error on macOS**
+
+- Use `--break-system-packages` flag with pip3
+- Or use virtual environment (recommended)
+
+## 🤝 Contributing
+
+We welcome contributions! Here's how you can help:
+
+1. **Fork the repository**
+2. **Create a feature branch**: `git checkout -b feature/amazing-feature`
+3. **Commit your changes**: `git commit -m 'Add amazing feature'`
+4. **Push to the branch**: `git push origin feature/amazing-feature`
+5. **Open a Pull Request**
+
+### Development Setup
 
 ```bash
-gcommit
+git clone https://github.com/GhufranBkri/gcommit.git
+cd gcommit
+pip install -r requirements.txt
 ```
 
-gcommit akan menampilkan pesan commit yang disarankan oleh AI. Ketik `y` untuk melakukan commit dengan pesan tersebut atau `n` untuk membatalkannya.
+## 📊 Project Stats
+
+- **Language**: Python 3.7+
+- **Dependencies**: GitPython, google-generativeai
+- **License**: MIT
+- **Platform**: Cross-platform (macOS, Linux, Windows)
+
+## 🔗 Related Projects
+
+- [Conventional Commits](https://www.conventionalcommits.org/)
+- [GitPython](https://github.com/gitpython-developers/GitPython)
+- [Google Generative AI](https://github.com/google/generative-ai-python)
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🌟 Show Your Support
+
+If you find GCommit helpful, please consider:
+
+- ⭐ Starring this repository
+- 🐛 Reporting bugs
+- 💡 Suggesting new features
+- 🤝 Contributing to the project
+
+## 📞 Support
+
+- **Issues**: [GitHub Issues](https://github.com/GhufranBkri/gcommit/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/GhufranBkri/gcommit/discussions)
+- **Email**: ghufranbakrie@gmail.com
+
+---
+
+**Keywords**: git commit generator, ai commit message, conventional commits, google gemini ai, git automation, developer tools, python git tools, commit message generator, ai git helper, automated git commits, git workflow optimization
+
+Made with ❤️ by developers, for developers.
