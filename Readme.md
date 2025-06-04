@@ -24,7 +24,8 @@ git clone https://github.com/GhufranBkri/gcommit.git # Ganti dengan URL reposito
 cd gcommit
 ```
 
-> **Catatan**: Ganti `username/gcommit.git` dengan URL repository Anda yang sebenarnya.
+lalu jalankan
+`pip install GitPython google-generativeai`
 
 ---
 
