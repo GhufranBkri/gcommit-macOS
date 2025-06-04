@@ -4,7 +4,6 @@ import sys
 import google.generativeai as genai
 import time
 import threading
-from datetime import datetime
 
 model_name = "gemini-1.5-flash-002"
 
